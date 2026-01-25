@@ -1,0 +1,55 @@
+.custom-cursor,
+.custom-cursor-follower,
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+
+.custom-cursor.pointer {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: linear-gradient(135deg, #ff0044, #0077ff);
+}
+
+.custom-cursor-follower {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease-out;
+}
+
+.cursor-trail {
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, #ff0044, #0077ff);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: trailFade 0.5s ease-out forwards;
+}
+
+@keyframes trailFade {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+body {
+  cursor: none;
+}
+
+button, a, [role="button"] {
+  cursor: none;
+}
