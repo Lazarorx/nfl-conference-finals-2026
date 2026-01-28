@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { motion } from 'framer-motion'
+import { FadeInWhenVisible, ScaleOnHover, FloatingElement } from './ScrollAnimations'
 import ParallaxCard from './ParallaxCard'
 import Confetti from './Confetti'
 import Fireworks from './Fireworks'
@@ -181,49 +183,102 @@ const EpicHero = () => {
       </div>
 
       {/* Main Content */}
-      <div className="epic-content">
+      <motion.div 
+        className="epic-content"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         {/* Top Badge */}
-        <div className="top-badge">
-          <span className="badge-icon">🏈</span>
-          <span className="badge-text">NFL CONFERENCE CHAMPIONSHIP</span>
-          <span className="badge-year">2026</span>
-        </div>
+        <FloatingElement duration={3}>
+          <motion.div 
+            className="top-badge"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", delay: 0.3 }}
+          >
+            <span className="badge-icon">🏈</span>
+            <span className="badge-text">NFL CONFERENCE CHAMPIONSHIP</span>
+            <span className="badge-year">2026</span>
+          </motion.div>
+        </FloatingElement>
 
         {/* Main Title */}
         <div className="main-title-container">
           <h1 className="main-title">
-            <span className="title-word" data-text="CONFERENCE">CONFERENCE</span>
-            <span className="title-word championship" data-text="FINALS">FINALS</span>
+            <motion.span 
+              className="title-word" 
+              data-text="CONFERENCE"
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              CONFERENCE
+            </motion.span>
+            <motion.span 
+              className="title-word championship" 
+              data-text="FINALS"
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              FINALS
+            </motion.span>
           </h1>
-          <div className="title-underline"></div>
+          <motion.div 
+            className="title-underline"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          />
         </div>
 
         {/* Countdown */}
-        <div className="countdown-epic">
-          <div className="countdown-label">COMEÇA EM</div>
-          <div className="countdown-display">
-            <div className="time-unit">
-              <div className="time-value">{String(timeLeft.hours).padStart(2, '0')}</div>
-              <div className="time-label">HORAS</div>
-            </div>
-            <div className="time-separator">:</div>
-            <div className="time-unit">
-              <div className="time-value">{String(timeLeft.minutes).padStart(2, '0')}</div>
-              <div className="time-label">MINUTOS</div>
-            </div>
-            <div className="time-separator">:</div>
-            <div className="time-unit">
-              <div className="time-value">{String(timeLeft.seconds).padStart(2, '0')}</div>
-              <div className="time-label">SEGUNDOS</div>
+        <FadeInWhenVisible delay={0.2}>
+          <div className="countdown-epic">
+            <div className="countdown-label">COMEÇA EM</div>
+            <div className="countdown-display">
+              <motion.div 
+                className="time-unit"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring" }}
+              >
+                <div className="time-value">{String(timeLeft.hours).padStart(2, '0')}</div>
+                <div className="time-label">HORAS</div>
+              </motion.div>
+              <div className="time-separator">:</div>
+              <motion.div 
+                className="time-unit"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring" }}
+              >
+                <div className="time-value">{String(timeLeft.minutes).padStart(2, '0')}</div>
+                <div className="time-label">MINUTOS</div>
+              </motion.div>
+              <div className="time-separator">:</div>
+              <motion.div 
+                className="time-unit"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring" }}
+              >
+                <div className="time-value">{String(timeLeft.seconds).padStart(2, '0')}</div>
+                <div className="time-label">SEGUNDOS</div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </FadeInWhenVisible>
 
         {/* Games Grid */}
         <div className="games-epic">
           {games.map((game, index) => (
-            <ParallaxCard key={index} className="game-epic-wrapper">
-              <div className="game-epic" data-conference={game.conference}>
+            <FadeInWhenVisible key={index} delay={index * 0.2}>
+              <ParallaxCard className="game-epic-wrapper">
+                <motion.div 
+                  className="game-epic" 
+                  data-conference={game.conference}
+                  whileHover={{ y: -10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                 {/* Player Background Images */}
                 <div className="players-background">
                   <div className="player-bg left" style={{
@@ -308,31 +363,36 @@ const EpicHero = () => {
                       <div className="player-stats">{game.team2.player.stats}</div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </ParallaxCard>
+                </motion.div>
+              </ParallaxCard>
+            </FadeInWhenVisible>
           ))}
         </div>
 
         {/* CTA Button */}
-        <div className="cta-container">
-          <button 
-            className="cta-epic"
-            onClick={() => {
-              setShowConfetti(true)
-              setTimeout(() => setShowFireworks(true), 500)
-              setTimeout(() => {
-                setShowConfetti(false)
-                setShowFireworks(false)
-              }, 5000)
-            }}
-            aria-label="Watch live NFL games"
-          >
-            <span className="cta-text">ASSISTIR AO VIVO</span>
-            <div className="cta-glow"></div>
-          </button>
-        </div>
-      </div>
+        <FadeInWhenVisible delay={0.4}>
+          <div className="cta-container">
+            <motion.button 
+              className="cta-epic"
+              onClick={() => {
+                setShowConfetti(true)
+                setTimeout(() => setShowFireworks(true), 500)
+                setTimeout(() => {
+                  setShowConfetti(false)
+                  setShowFireworks(false)
+                }, 5000)
+              }}
+              aria-label="Watch live NFL games"
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 60px rgba(255, 0, 68, 0.6)" }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <span className="cta-text">ASSISTIR AO VIVO</span>
+              <div className="cta-glow"></div>
+            </motion.button>
+          </div>
+        </FadeInWhenVisible>
+      </motion.div>
 
       {/* Decorative Elements */}
       <div className="corner-decoration top-left"></div>
