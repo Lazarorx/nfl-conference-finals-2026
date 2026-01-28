@@ -363,7 +363,8 @@ const EpicHero = () => {
                       <div className="player-stats">{game.team2.player.stats}</div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
+              </motion.div>
               </ParallaxCard>
             </FadeInWhenVisible>
           ))}
