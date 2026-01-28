@@ -5,8 +5,17 @@ const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isPointer, setIsPointer] = useState(false)
   const [trail, setTrail] = useState([])
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
 
   useEffect(() => {
+    // Detect touch device
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  }, [])
+
+  useEffect(() => {
+    // Don't show custom cursor on touch devices
+    if (isTouchDevice) return
+
     const handleMouseMove = (e) => {
       setPosition({ x: e.clientX, y: e.clientY })
       
@@ -24,7 +33,9 @@ const CustomCursor = () => {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+  }, [isTouchDevice])
+
+  if (isTouchDevice) return null
 
   return (
     <>

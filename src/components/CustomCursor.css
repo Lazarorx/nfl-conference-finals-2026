@@ -47,9 +47,19 @@
 }
 
 body {
+  cursor: auto;
+}
+
+body:not(.touch-device) {
   cursor: none;
 }
 
 button, a, [role="button"] {
+  cursor: auto;
+}
+
+body:not(.touch-device) button,
+body:not(.touch-device) a,
+body:not(.touch-device) [role="button"] {
   cursor: none;
 }

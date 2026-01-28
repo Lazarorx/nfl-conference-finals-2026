@@ -1,9 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import ParallaxCard from './ParallaxCard'
 import Confetti from './Confetti'
 import Fireworks from './Fireworks'
 import VictoryAnimation from './VictoryAnimation'
 import './EpicHero.css'
+
+// Move calculateTimeLeft outside component to avoid recreation
+const calculateTimeLeft = () => {
+  const gameDate = new Date('2026-01-26T18:00:00')
+  const difference = gameDate - new Date()
+  
+  if (difference > 0) {
+    return {
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60)
+    }
+  }
+  return { hours: 0, minutes: 0, seconds: 0 }
+}
 
 const EpicHero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -11,20 +26,28 @@ const EpicHero = () => {
   const [showConfetti, setShowConfetti] = useState(false)
   const [showFireworks, setShowFireworks] = useState(false)
   const [showVictory, setShowVictory] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [imageErrors, setImageErrors] = useState({})
 
-  function calculateTimeLeft() {
-    const gameDate = new Date('2026-01-26T18:00:00')
-    const difference = gameDate - new Date()
-    
-    if (difference > 0) {
-      return {
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
-      }
+  // Detect mobile on mount
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
     }
-    return { hours: 0, minutes: 0, seconds: 0 }
-  }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Throttle mouse movement for better performance
+  const handleMouseMove = useCallback((e) => {
+    requestAnimationFrame(() => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100
+      })
+    })
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -42,20 +65,26 @@ const EpicHero = () => {
       }
     }, 1000)
 
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100
-      })
+    // Only add mouse listener on desktop
+    if (!isMobile) {
+      window.addEventListener('mousemove', handleMouseMove)
     }
-
-    window.addEventListener('mousemove', handleMouseMove)
 
     return () => {
       clearInterval(timer)
-      window.removeEventListener('mousemove', handleMouseMove)
+      if (!isMobile) {
+        window.removeEventListener('mousemove', handleMouseMove)
+      }
     }
+  }, [isMobile, handleMouseMove])
+
+  // Handle image loading errors
+  const handleImageError = useCallback((imageKey) => {
+    setImageErrors(prev => ({ ...prev, [imageKey]: true }))
   }, [])
+
+  // Memoize particle count
+  const particleCount = useMemo(() => isMobile ? 20 : 50, [isMobile])
 
   const games = [
     {
@@ -140,7 +169,7 @@ const EpicHero = () => {
           '--mouse-y': `${mousePosition.y}%`
         }}></div>
         <div className="particles">
-          {[...Array(window.innerWidth < 768 ? 20 : 50)].map((_, i) => (
+          {[...Array(particleCount)].map((_, i) => (
             <div key={i} className="particle" style={{
               '--delay': `${Math.random() * 5}s`,
               '--duration': `${5 + Math.random() * 10}s`,
@@ -224,7 +253,13 @@ const EpicHero = () => {
                     <div className="team-glow"></div>
                     <div className="team-logo-container">
                       <div className="logo-ring"></div>
-                      <img src={game.team1.logo} alt={game.team1.name} className="team-logo-epic" />
+                      <img 
+                        src={game.team1.logo} 
+                        alt={`${game.team1.name} team logo`}
+                        className="team-logo-epic"
+                        loading="lazy"
+                        onError={() => handleImageError(`team1-${index}`)}
+                      />
                     </div>
                     <div className="team-info-epic">
                       <div className="team-city">{game.team1.city}</div>
@@ -254,7 +289,13 @@ const EpicHero = () => {
                     <div className="team-glow"></div>
                     <div className="team-logo-container">
                       <div className="logo-ring"></div>
-                      <img src={game.team2.logo} alt={game.team2.name} className="team-logo-epic" />
+                      <img 
+                        src={game.team2.logo} 
+                        alt={`${game.team2.name} team logo`}
+                        className="team-logo-epic"
+                        loading="lazy"
+                        onError={() => handleImageError(`team2-${index}`)}
+                      />
                     </div>
                     <div className="team-info-epic">
                       <div className="team-city">{game.team2.city}</div>
@@ -285,6 +326,7 @@ const EpicHero = () => {
                 setShowFireworks(false)
               }, 5000)
             }}
+            aria-label="Watch live NFL games"
           >
             <span className="cta-text">ASSISTIR AO VIVO</span>
             <div className="cta-glow"></div>
