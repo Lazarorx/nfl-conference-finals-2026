@@ -1,0 +1,86 @@
+.victory-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.victory-content {
+  text-align: center;
+  animation: scaleIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.trophy {
+  font-size: 8rem;
+  animation: bounce 1s ease-in-out infinite, rotate 2s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+}
+
+.victory-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.9;
+  margin: 2rem 0;
+}
+
+.victory-line {
+  display: block;
+  background: linear-gradient(135deg, #ff0044, #ff6b00, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: slideInUp 0.6s ease-out backwards;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+}
+
+.victory-line:nth-child(1) { animation-delay: 0.2s; }
+.victory-line:nth-child(2) { animation-delay: 0.4s; }
+.victory-line:nth-child(3) { animation-delay: 0.6s; }
+
+.victory-subtext {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  animation: fadeIn 1s ease-out 0.8s backwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

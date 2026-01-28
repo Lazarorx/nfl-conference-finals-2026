@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import ParallaxCard from './ParallaxCard'
+import Confetti from './Confetti'
+import Fireworks from './Fireworks'
+import VictoryAnimation from './VictoryAnimation'
 import './EpicHero.css'
 
 const EpicHero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [showFireworks, setShowFireworks] = useState(false)
+  const [showVictory, setShowVictory] = useState(false)
 
   function calculateTimeLeft() {
     const gameDate = new Date('2026-01-26T18:00:00')
@@ -22,7 +28,18 @@ const EpicHero = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
+      const newTimeLeft = calculateTimeLeft()
+      setTimeLeft(newTimeLeft)
+      
+      // Trigger fireworks when countdown reaches zero
+      if (newTimeLeft.hours === 0 && newTimeLeft.minutes === 0 && newTimeLeft.seconds === 0) {
+        setShowFireworks(true)
+        setShowVictory(true)
+        setTimeout(() => {
+          setShowFireworks(false)
+          setShowVictory(false)
+        }, 5000)
+      }
     }, 1000)
 
     const handleMouseMove = (e) => {
@@ -111,6 +128,11 @@ const EpicHero = () => {
 
   return (
     <div className="epic-hero">
+      {/* Confetti and Fireworks */}
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
+      <Fireworks active={showFireworks} onComplete={() => setShowFireworks(false)} />
+      <VictoryAnimation show={showVictory} />
+      
       {/* Animated Background */}
       <div className="epic-background">
         <div className="gradient-mesh" style={{
@@ -253,7 +275,17 @@ const EpicHero = () => {
 
         {/* CTA Button */}
         <div className="cta-container">
-          <button className="cta-epic">
+          <button 
+            className="cta-epic"
+            onClick={() => {
+              setShowConfetti(true)
+              setTimeout(() => setShowFireworks(true), 500)
+              setTimeout(() => {
+                setShowConfetti(false)
+                setShowFireworks(false)
+              }, 5000)
+            }}
+          >
             <span className="cta-text">ASSISTIR AO VIVO</span>
             <div className="cta-glow"></div>
           </button>
