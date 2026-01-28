@@ -1329,3 +1329,161 @@
     background-position: 200% center;
   }
 }
+
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .epic-hero {
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  .epic-content {
+    gap: 2rem;
+  }
+
+  .main-title {
+    font-size: clamp(2.5rem, 12vw, 5rem);
+  }
+
+  .countdown-display {
+    gap: 0.5rem;
+  }
+
+  .time-value {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .games-epic {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .game-epic {
+    padding: 1.5rem;
+  }
+
+  .matchup-epic {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .vs-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff0044, transparent, #0077ff);
+  }
+
+  .team-logo-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .team-name-epic {
+    font-size: 1.5rem;
+  }
+
+  .player-info {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cta-epic {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* Disable heavy animations on mobile */
+  .game-epic::before,
+  .game-epic::after {
+    display: none;
+  }
+
+  .holographic,
+  .scanLine {
+    animation: none;
+  }
+
+  /* Simplify particle effects */
+  .particle {
+    display: none;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .games-epic {
+    grid-template-columns: 1fr;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .main-title {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+  }
+}
+
+/* Performance: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .particle,
+  .gradient-orb {
+    animation: none !important;
+  }
+}
+
+/* Lazy Loading Images */
+.team-logo-epic,
+.player-bg {
+  loading: lazy;
+}
+
+/* Improve text readability on small screens */
+@media (max-width: 480px) {
+  .game-time-location {
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .player-stats {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .player-name {
+    font-size: 0.95rem;
+  }
+
+  .top-badge {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .badge-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Touch-friendly buttons */
+@media (hover: none) and (pointer: coarse) {
+  .cta-epic,
+  .team-epic,
+  .game-epic {
+    cursor: default;
+  }
+
+  .cta-epic:active {
+    transform: scale(0.95);
+  }
+
+  .team-epic:active {
+    transform: scale(0.98);
+  }
+}

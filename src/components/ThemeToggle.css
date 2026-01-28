@@ -1,0 +1,121 @@
+.theme-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: 0.5rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.toggle-track {
+  width: 60px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #ff0044, #0077ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+[data-theme="light"] .toggle-thumb {
+  left: calc(100% - 29px);
+  background: linear-gradient(135deg, #ffd700, #ff6b00);
+}
+
+/* Light Theme Styles */
+[data-theme="light"] {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+}
+
+[data-theme="light"] body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .epic-hero {
+  background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 100%);
+}
+
+[data-theme="light"] .gradient-mesh {
+  background: 
+    radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 0, 68, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at calc(100% - var(--mouse-x, 50%)) calc(100% - var(--mouse-y, 50%)), rgba(0, 119, 255, 0.15) 0%, transparent 50%);
+}
+
+[data-theme="light"] .game-epic {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .main-title {
+  color: #1a1a1a;
+  text-shadow: 
+    0 0 20px rgba(0, 0, 0, 0.1),
+    0 0 40px rgba(255, 0, 68, 0.2);
+}
+
+[data-theme="light"] .player-bg::after {
+  background: radial-gradient(circle at center, transparent 20%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+[data-theme="light"] .team-epic {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .conference-label,
+[data-theme="light"] .game-time-location {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1a1a1a;
+}
+
+[data-theme="light"] .time-value {
+  color: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .toggle-track {
+    width: 50px;
+    height: 26px;
+  }
+  
+  .toggle-thumb {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+}

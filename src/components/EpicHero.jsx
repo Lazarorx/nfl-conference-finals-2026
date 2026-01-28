@@ -118,7 +118,7 @@ const EpicHero = () => {
           '--mouse-y': `${mousePosition.y}%`
         }}></div>
         <div className="particles">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(window.innerWidth < 768 ? 20 : 50)].map((_, i) => (
             <div key={i} className="particle" style={{
               '--delay': `${Math.random() * 5}s`,
               '--duration': `${5 + Math.random() * 10}s`,

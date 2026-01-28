@@ -14,6 +14,10 @@ const InteractiveParticles = () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
+    // Reduce particles on mobile for performance
+    const isMobile = window.innerWidth < 768
+    const particleCount = isMobile ? 30 : 100
+
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width
@@ -53,7 +57,7 @@ const InteractiveParticles = () => {
     }
 
     // Create particles
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < particleCount; i++) {
       particlesRef.current.push(new Particle())
     }
 
