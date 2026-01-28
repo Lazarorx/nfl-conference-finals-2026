@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import EpicHero from './components/EpicHero'
 import InteractiveParticles from './components/InteractiveParticles'
 import CustomCursor from './components/CustomCursor'
